@@ -3,30 +3,31 @@
 namespace app\controllers;
 
 use Yii;
-use yii\filters\AccessControl;
-use yii\web\Controller;
+use yii\rest\Controller;
+use yii\filters\ContentNegotiator;
 use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+use yii\filters\auth\QueryParamAuth;
 
-class SiteController extends BaseController
+class BaseController extends Controller
 {
     /**
      * {@inheritdoc}
      */
     public function behaviors()
     {
-        $behaviors = parent::behaviors();
-        $behaviors['authenticator']['only'] = ['logout'];
-        $behaviors['verbs'] = [
-        'class' => VerbFilter::className(),
-        'actions' => [
-        'logout' => ['post'],
-        'login' => ['post'],
-        ],
-        ];
-        return $behaviors;
+        return [
+            'contentNegotiator' => [
+            'class' => ContentNegotiator::class,
+            'formats' => [
+            'application/json' =>
+            Response::FORMAT_JSON,
+            ],
+            ],
+            'authenticator' => [
+            'class' => QueryParamAuth::className(),
+            'tokenParam' => 'token',
+            ],
+            ];
     }
 
     /**
@@ -52,7 +53,7 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
-        return 'API for Sсhedule';
+        return $this->render('index');
     }
 
     /**
@@ -62,13 +63,19 @@ class SiteController extends BaseController
      */
     public function actionLogin()
     {
-        $model = new LoginForm();
-        $model->load(Yii::$app->request->bodyParams, '');
-        if ($token = $model->auth()) {
-        return $token;
-        } else {
-        throw new UnauthorizedHttpException('Unauthorized user');
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
         }
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        }
+
+        $model->password = '';
+        return $this->render('login', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -78,10 +85,9 @@ class SiteController extends BaseController
      */
     public function actionLogout()
     {
-        if (Yii::$app->user->identity->logout()) {
-            return ['message' => 'logout success'];
-            }
-            throw new UnauthorizedHttpException('Unauthorized user');
+        Yii::$app->user->logout();
+
+        return $this->goHome();
     }
 
     /**
