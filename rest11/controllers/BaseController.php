@@ -30,6 +30,11 @@ class BaseController extends Controller
             ];
     }
 
+    public $serializer = [
+        'class' => 'yii\rest\Serializer',
+        'collectionEnvelope' => 'items',
+        ];
+
     /**
      * {@inheritdoc}
      */
