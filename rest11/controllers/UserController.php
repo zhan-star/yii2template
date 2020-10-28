@@ -23,7 +23,7 @@ class UserController extends BaseController
         return $this->saveModel($user);
     }
 
-    public function actionUpdate()
+    public function actionUpdate($id)
     {
         $user = $this->findModel($id);
         return $this->saveModel($user);
@@ -51,7 +51,7 @@ class UserController extends BaseController
     {
         $user = User::findOne($id);
         if ($user === null) {
-        throw new NotFoundHttpException("User with ID $id not found");
+            throw new NotFoundHttpException("User with ID $id not found");
         }
         return $user;
     }

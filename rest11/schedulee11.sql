@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Сен 28 2020 г., 14:44
+-- Время создания: Окт 28 2020 г., 12:29
 -- Версия сервера: 10.3.22-MariaDB
 -- Версия PHP: 7.1.33
 
@@ -38,7 +38,10 @@ CREATE TABLE `auth_assignment` (
 --
 
 INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
-('admin', '1', 1601284917);
+('admin', '1', 1601284917),
+('admin', '6', 1603875337),
+('manager', '7', 1603875658),
+('student', '8', 1603876005);
 
 -- --------------------------------------------------------
 
@@ -349,7 +352,7 @@ INSERT INTO `special` (`special_id`, `name`, `otdel_id`, `active`) VALUES
 CREATE TABLE `student` (
   `user_id` bigint(20) NOT NULL,
   `gruppa_id` int(11) NOT NULL,
-  `num_zach` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+  `num_zach` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -358,7 +361,8 @@ CREATE TABLE `student` (
 
 INSERT INTO `student` (`user_id`, `gruppa_id`, `num_zach`) VALUES
 (3, 1, '124324'),
-(4, 3, '456346');
+(4, 3, '456346'),
+(8, 1, 'К1020');
 
 -- --------------------------------------------------------
 
@@ -398,7 +402,8 @@ CREATE TABLE `teacher` (
 --
 
 INSERT INTO `teacher` (`user_id`, `otdel_id`) VALUES
-(2, 1);
+(2, 1),
+(7, 1);
 
 -- --------------------------------------------------------
 
@@ -417,7 +422,7 @@ CREATE TABLE `user` (
   `expired_at` int(11) DEFAULT NULL,
   `gender_id` tinyint(4) NOT NULL,
   `birthday` date DEFAULT NULL,
-  `role_id` tinyint(4) NOT NULL,
+  `role_id` tinyint(4) DEFAULT NULL,
   `active` tinyint(4) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -426,10 +431,14 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `lastname`, `firstname`, `patronymic`, `login`, `pass`, `token`, `expired_at`, `gender_id`, `birthday`, `role_id`, `active`) VALUES
-(1, 'Смит', 'Джон', 'Тимофеевич', 'admin', '$2y$13$u9hGuhVBf9yCSNeLI4gW8OB8FkdDY7Qc28oiuBEeYsmmJNeTs55ca', '8cbiuOAMl6XpqGIViqHMf1XmSC24yoW3', 1601379856, 1, '2000-07-10', 1, 1),
+(1, 'Смит', 'Джон', 'Тимофеевич', 'admin', '$2y$13$u9hGuhVBf9yCSNeLI4gW8OB8FkdDY7Qc28oiuBEeYsmmJNeTs55ca', '8cbiuOAMl6XpqGIViqHMf1XmSC24yoW3', NULL, 1, '2000-07-10', 1, 1),
 (2, 'Yessenzholov', 'Teacher', 'Almasovich', 'href', '$2y$10$UtAV08sKOnRtbHKTco1Y8ecpfc8BO8PCTepbJI9EWOD.rFfmlCTU.', NULL, NULL, 1, '2521-04-14', 3, 1),
 (3, 'Test', 'Test', 'Student', 'awdawd', '$2y$10$Ks6MNhbL0M5yk7gcLnvoMuaU0OXO7mahegvsjISXgL4EnqLc/mxLK', NULL, NULL, 1, '2532-05-12', 4, 1),
-(4, 'student', 'Tester', '123', 'student', '$2y$10$Tk3/BpBJ2uAe7Ff8FkUjH.Mun29rn/bsoUZiic4NMAAlpudNwURvq', NULL, NULL, 1, '3125-02-15', 4, 1);
+(4, 'student', 'Tester', '123', 'student', '$2y$10$Tk3/BpBJ2uAe7Ff8FkUjH.Mun29rn/bsoUZiic4NMAAlpudNwURvq', NULL, NULL, 1, '3125-02-15', 4, 1),
+(5, 'Ivanov', 'Джон', 'Тимофеевич', 'Ivan', '$2y$13$u9hGuhVBf9yCSNeLI4gW8OB8FkdDY7Qc28oiuBEeYsmmJNeTs55ca', 'A8tc62uaikzHgPOB8drhb0l08zQNhVr6', 1603961587, 1, '1990-05-20', 3, 1),
+(6, 'Ivanov', 'Джон', 'Ivancho', 'Ivan1', '$2y$13$7iSn1vgoBMCqZGIdDLYDI./DjOoygSGJZxBnmJwIa3g7Y7U4o2Qy2', NULL, NULL, 1, '2000-07-10', NULL, 1),
+(7, 'Есенжолов', 'Жангир', 'Арманович', 'ominous', '$2y$13$PIcMyITEMTLPN1oIWs2n4em/HCDCLPIhOpF4S3BmYcdvPrc2C3h3e', NULL, NULL, 1, '2002-08-15', 3, 1),
+(8, 'Голубовская', 'Ирина', 'Ярославна', 'Mailista', '$2y$13$WpgfpszALsEot5AjFDCXBOmNTfCi9mIVkej1HLfh1qXvm68hfVqYu', NULL, NULL, 2, '2001-01-01', 4, 1);
 
 --
 -- Индексы сохранённых таблиц
@@ -640,7 +649,7 @@ ALTER TABLE `subject`
 -- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
