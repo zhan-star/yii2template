@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Окт 28 2020 г., 12:29
+-- Время создания: Окт 29 2020 г., 09:58
 -- Версия сервера: 10.3.22-MariaDB
 -- Версия PHP: 7.1.33
 
@@ -272,7 +272,10 @@ INSERT INTO `otdel` (`otdel_id`, `name`, `active`) VALUES
 (1, 'Программирование', 1),
 (2, 'Общеобразовательные дисциплины', 1),
 (3, 'Строительство', 1),
-(4, 'Дизайн', 1);
+(4, 'Дизайн', 1),
+(5, 'Техобслуживание', 1),
+(6, 'Стандартизация', 1),
+(7, 'Экономические вычисления', 0);
 
 -- --------------------------------------------------------
 
@@ -341,7 +344,8 @@ INSERT INTO `special` (`special_id`, `name`, `otdel_id`, `active`) VALUES
 (3, 'Строительство и эксплуатация зданий и сооружений', 3, 1),
 (4, 'Электроснабжение', 3, 1),
 (5, 'Вычислительная техника и программное обеспечение', 1, 1),
-(6, 'Дизайн и интерьер', 4, 1);
+(6, 'Дизайн и интерьер', 4, 1),
+(7, 'ЭВМ', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -619,7 +623,7 @@ ALTER TABLE `lesson_plan`
 -- AUTO_INCREMENT для таблицы `otdel`
 --
 ALTER TABLE `otdel`
-  MODIFY `otdel_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `otdel_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `role`
@@ -637,7 +641,7 @@ ALTER TABLE `schedule`
 -- AUTO_INCREMENT для таблицы `special`
 --
 ALTER TABLE `special`
-  MODIFY `special_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `special_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `subject`

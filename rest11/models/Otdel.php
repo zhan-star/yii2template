@@ -11,7 +11,7 @@ use Yii;
  * @property string $name
  * @property int $active
  *
- * @property Special[] $specials
+ * @property Special[] $otdels
  * @property Subject[] $subjects
  * @property Teacher[] $teachers
  */
@@ -66,6 +66,30 @@ class Otdel extends \yii\db\ActiveRecord
     public function getSubjects()
     {
         return $this->hasMany(Subject::className(), ['otdel_id' => 'otdel_id']);
+    }
+
+    public function fields()
+    {
+        $fields = parent::fields();
+        return array_merge($fields, [
+            'otdel_id' => function () { return $this->otdel_id;},
+            'active' => function () { return $this->active;},
+        ]);
+    }
+
+    public function loadAndSave($bodyParams)
+    {
+        $otdel = ($this->isNewRecord) ? new Otdel() :
+        Otdel::findOne($this->otdel_id);
+        if ($otdel->load($bodyParams, '') && $otdel->save()) {
+            if ($this->isNewRecord) {
+                $this->otdel_id = $otdel->otdel_id;
+            }
+            if ($this->load($bodyParams, '') && $this->save()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

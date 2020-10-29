@@ -52,6 +52,13 @@ class Day extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Schedule::className(), ['day_id' => 'day_id']);
     }
+    public function fields()
+    {
+        $fields = parent::fields();
+        return array_merge($fields, [
+            'day_id' => function () { return $this->day_id;},
+        ]);
+    }
 
     /**
      * {@inheritdoc}

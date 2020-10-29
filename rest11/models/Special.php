@@ -9,11 +9,11 @@ use Yii;
  *
  * @property int $special_id
  * @property string $name
- * @property int $otdel_id
+ * @property int $special_id
  * @property int $active
  *
  * @property Gruppa[] $gruppas
- * @property Otdel $otdel
+ * @property Otdel $special
  */
 class Special extends \yii\db\ActiveRecord
 {
@@ -51,6 +51,30 @@ class Special extends \yii\db\ActiveRecord
         ];
     }
 
+    public function fields()
+    {
+        $fields = parent::fields();
+        return array_merge($fields, [
+            'special_id' => function () { return $this->special_id;},
+            'otdelName' => function () { return $this->otdel->name;},
+            'active' => function () { return $this->active;},
+        ]);
+    }
+
+    public function loadAndSave($bodyParams)
+    {
+        $special = ($this->isNewRecord) ? new Special() :
+        Special::findOne($this->special_id);
+        if ($special->load($bodyParams, '') && $special->save()) {
+            if ($this->isNewRecord) {
+                $this->special_id = $special->special_id;
+            }
+            if ($this->load($bodyParams, '') && $this->save()) {
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * Gets query for [[Gruppas]].
      *

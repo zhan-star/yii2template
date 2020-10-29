@@ -52,6 +52,13 @@ class Gender extends \yii\db\ActiveRecord
     {
         return $this->hasMany(User::className(), ['gender_id' => 'gender_id']);
     }
+    public function fields()
+    {
+        $fields = parent::fields();
+        return array_merge($fields, [
+            'gender_id' => function () { return $this->gender_id;},
+        ]);
+    }
 
     /**
      * {@inheritdoc}
