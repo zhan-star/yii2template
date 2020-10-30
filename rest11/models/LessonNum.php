@@ -35,6 +35,14 @@ class LessonNum extends \yii\db\ActiveRecord
         ];
     }
 
+    public function fields()
+    {
+        $fields = parent::fields();
+        return array_merge($fields, [
+            'lesson_num_id' => function () { return $this->lesson_num_id;},
+            'time_lesson' => function () { return $this->time_lesson_id;},
+        ]);
+    }
     /**
      * {@inheritdoc}
      */

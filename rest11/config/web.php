@@ -73,7 +73,21 @@ $config = [
                 'controller' => 'special',
                 'except' => ['delete'],
                 ],
-                
+            [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => 'classroom',
+                'except' => ['delete'],
+                ],
+            [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => 'lesson-num',
+                'except' => ['delete'],
+                ],         
+            [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => 'subject',
+                'except' => ['delete'],
+                ],     
             ],
         ],
         'errorHandler' => [

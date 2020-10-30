@@ -7,22 +7,22 @@ use Yii;
 /**
  * This is the model class for table "special".
  *
- * @property int $special_id
+ * @property int $classroom_id
  * @property string $name
- * @property int $special_id
+ * @property int $classroom_id
  * @property int $active
  *
  * @property Gruppa[] $gruppas
- * @property Otdel $special
+ * @property Otdel $classroom
  */
-class Special extends \yii\db\ActiveRecord
+class Classroom extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'special';
+        return 'classroom';
     }
 
     /**
@@ -31,10 +31,10 @@ class Special extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['special_id'], 'required'],
-            [['special_id', 'active'], 'integer'],
+            [['classroom_id'], 'required'],
+            [['classroom_id', 'active'], 'integer'],
             [['name'], 'string', 'max' => 250],
-            [['special_id'], 'exist', 'skipOnError' => true, 'targetClass' => Special::className(), 'targetAttribute' => ['special_id' => 'special_id']],
+            [['classroom_id'], 'exist', 'skipOnError' => true, 'targetClass' => Classroom::className(), 'targetAttribute' => ['classroom_id' => 'classroom_id']],
         ];
     }
 
@@ -44,9 +44,8 @@ class Special extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'special_id' => 'Special ID',
+            'classroom_id' => 'Classroom ID',
             'name' => 'Name',
-            'otdel_id' => 'Otdel ID',
             'active' => 'Active',
         ];
     }
@@ -55,19 +54,19 @@ class Special extends \yii\db\ActiveRecord
     {
         $fields = parent::fields();
         return array_merge($fields, [
-            'special_id' => function () { return $this->special_id;},
-            'otdelName' => function () { return $this->otdel->name;},
+            'classroom_id' => function () { return $this->classroom_id;},
+            'name' => function () { return $this->name;},
             'active' => function () { return $this->active;},
         ]);
     }
 
     public function loadAndSave($bodyParams)
     {
-        $special = ($this->isNewRecord) ? new Special() :
-        Special::findOne($this->special_id);
-        if ($special->load($bodyParams, '') && $special->save()) {
+        $classroom = ($this->isNewRecord) ? new Special() :
+        Classroom::findOne($this->classroom_id);
+        if ($classroom->load($bodyParams, '') && $classroom->save()) {
             if ($this->isNewRecord) {
-                $this->special_id = $special->special_id;
+                $this->classroom_id = $classroom->classroom_id;
             }
             if ($this->load($bodyParams, '') && $this->save()) {
                 return true;
@@ -82,7 +81,7 @@ class Special extends \yii\db\ActiveRecord
      */
     public function getGruppas()
     {
-        return $this->hasMany(Gruppa::className(), ['special_id' => 'special_id']);
+        return $this->hasMany(Gruppa::className(), ['classroom_id' => 'classroom_id']);
     }
 
     /**
@@ -92,7 +91,7 @@ class Special extends \yii\db\ActiveRecord
      */
     public function getOtdel()
     {
-        return $this->hasOne(Otdel::className(), ['otdel_id' => 'otdel_id']);
+        return $this->hasOne(Otdel::className(), ['classroom_id' => 'classroom_id']);
     }
 
     /**

@@ -54,6 +54,18 @@ class Gruppa extends \yii\db\ActiveRecord
         ];
     }
 
+    public function fields()
+    {
+        $fields = parent::fields();
+        return array_merge($fields, [
+            'gruppa_id' => function () { return $this->gruppa_id;},
+            'name' => function () { return $this->name;},
+            'specialName' => function () { return $this->special->name;},
+            'date_begin' => function () { return $this->date_begin;},
+            'date_end' => function () { return $this->date_end;},
+        ]);
+    }
+
     /**
      * Gets query for [[Special]].
      *

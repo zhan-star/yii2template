@@ -53,6 +53,18 @@ class Subject extends \yii\db\ActiveRecord
         ];
     }
 
+    public function fields()
+    {
+        $fields = parent::fields();
+        return array_merge($fields, [
+            'subject_id' => function () { return $this->subject_id;},
+            'name' => function () { return $this->name;},
+            'otdelName' => function () { return $this->otdel->name;},
+            'hours' => function () { return $this->hours;},
+            'active' => function () { return $this->active;},
+        ]);
+    }
+
     /**
      * Gets query for [[LessonPlans]].
      *
