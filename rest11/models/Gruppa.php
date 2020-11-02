@@ -37,6 +37,7 @@ class Gruppa extends \yii\db\ActiveRecord
             [['date_begin', 'date_end'], 'safe'],
             [['name'], 'string', 'max' => 10],
             [['special_id'], 'exist', 'skipOnError' => true, 'targetClass' => Special::className(), 'targetAttribute' => ['special_id' => 'special_id']],
+            
         ];
     }
 
@@ -64,6 +65,20 @@ class Gruppa extends \yii\db\ActiveRecord
             'date_begin' => function () { return $this->date_begin;},
             'date_end' => function () { return $this->date_end;},
         ]);
+    }
+    public function loadAndSave($bodyParams)
+    {
+        $gruppa = ($this->isNewRecord) ? new Gruppa() :
+        Gruppa::findOne($this->gruppa_id);
+        if ($gruppa->load($bodyParams, '') && $gruppa->save()) {
+            if ($this->isNewRecord) {
+                $this->gruppa_id = $gruppa->gruppa_id;
+            }
+            if ($this->load($bodyParams, '') && $this->save()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

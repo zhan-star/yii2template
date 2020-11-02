@@ -40,7 +40,7 @@ class LessonNum extends \yii\db\ActiveRecord
         $fields = parent::fields();
         return array_merge($fields, [
             'lesson_num_id' => function () { return $this->lesson_num_id;},
-            'time_lesson' => function () { return $this->time_lesson_id;},
+            'time_lesson' => function () { return $this->time_lesson;},
         ]);
     }
     /**

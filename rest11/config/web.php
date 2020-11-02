@@ -80,9 +80,14 @@ $config = [
                 ],
             [
                 'class' => 'yii\rest\UrlRule',
-                'controller' => 'lesson-num',
+                'controller' => 'lessonnum',
                 'except' => ['delete'],
-                ],         
+                ],
+            [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => 'lesson-plan',
+                'except' => ['delete'],
+                ],              
             [
                 'class' => 'yii\rest\UrlRule',
                 'controller' => 'subject',
