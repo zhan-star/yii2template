@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use yii\data\ActiveDataProvider;
 use app\models\Schedule;
+use app\models\LessonPlan;
 use Yii;
 use yii\helpers\Url;
 use yii\web\ServerErrorHttpException;
@@ -27,12 +28,12 @@ class ScheduleController extends BaseController
         $filter1 = $_GET['gruppa_id'];
         $filter2 = $_GET['user_id'];
         if ($filter1!=""&&$filter1!=null&&$filter2!=""&&$filter2!=null){
-            return new ActiveDataProvider(['query' => LessonPlan::find()->where(['gruppa_id' => $filter1,'user_id' => $filter2])]);
+            $query =(new \yii\db\Query())->select(['lesson_plan.lesson_plan_id'])-> from(['schedule'])->innerJoin('lesson_plan')->where(['lesson_plan.gruppa_id'=>$filter1,'lesson_plan.user_id'=>$filter2]);
+            return new ActiveDataProvider(['query' => Schedule::find()->where(['schedule.lesson_plan_id' => $query])]);
         }
         else{
             return new ActiveDataProvider(['query' => Schedule::find()]);
         }
-        
     }
 
 
