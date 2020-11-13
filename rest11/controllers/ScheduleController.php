@@ -12,10 +12,29 @@ use yii\web\NotFoundHttpException;
 class ScheduleController extends BaseController
 {
 
+    public function actionDelete($id)
+    {
+        $schedule = $this->findModel($id)->delete();
+        if ($schedule==1){
+            return "message: Deleted schedule №$id";
+        }
+        else{
+            return "Error.";
+        }
+    }
     public function actionIndex()
     {
-        return new ActiveDataProvider(['query' => Schedule::find()]);
+        $filter1 = $_GET['gruppa_id'];
+        $filter2 = $_GET['user_id'];
+        if ($filter1!=""&&$filter1!=null&&$filter2!=""&&$filter2!=null){
+            return new ActiveDataProvider(['query' => LessonPlan::find()->where(['gruppa_id' => $filter1,'user_id' => $filter2])]);
+        }
+        else{
+            return new ActiveDataProvider(['query' => Schedule::find()]);
+        }
+        
     }
+
 
     public function actionCreate()
     {
